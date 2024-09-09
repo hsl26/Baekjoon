@@ -1,9 +1,10 @@
 n = int(input())
 
-fibo = [0, 1]
+def F(F0, F1):
+    return F1, F0+F1
 
-
-for i in range(n-1):
-    fibo.append(fibo[i] + fibo[i+1])
-
-print(fibo[-1])
+f0 = 0
+f1 = 1
+for _ in range(n):
+    f0, f1 = F(f0, f1)
+print(f0)
