@@ -1,6 +1,5 @@
 N = int(input())
 have = list(map(int, input().split()))
-M, m = max(have), min(have)
 
 card = {}
 for h in have:
