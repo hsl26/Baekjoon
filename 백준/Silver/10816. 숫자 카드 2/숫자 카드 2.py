@@ -4,14 +4,14 @@ M = int(input())
 M_card = list(map(int, input().split()))
 
 have = {}
+for card in M_card:
+    have[card] = 0
+
 for card in N_card:
     try:
         have[card] += 1
     except:
-        have[card] = 1
+        continue
 
 for card in M_card:
-    try:
-        print(have[card], end=' ')
-    except:
-        print(0, end=' ')
+    print(have[card], end=' ')
