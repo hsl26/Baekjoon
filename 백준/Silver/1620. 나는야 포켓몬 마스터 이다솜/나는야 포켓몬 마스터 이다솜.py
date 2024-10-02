@@ -6,8 +6,7 @@ for idx, p in enumerate(pocket):
 
 for _ in range(M):
     question = input()
-    try:
-        q = int(question)
-        print(pocket[q-1])
-    except:
+    if question.isdigit():
+        print(pocket[int(question)-1])
+    else:
         print(pocket_dict[question]+1)
