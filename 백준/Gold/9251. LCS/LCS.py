@@ -23,7 +23,7 @@ initialize()
 for a in range(1, len(A)):
     for b in range(1, len(B)):
         if A[a] == B[b]:
-            DP[a][b] = max(DP[a][b-1], DP[a-1][b], DP[a-1][b-1]+1)
+            DP[a][b] = DP[a-1][b-1]+1
         else:
             DP[a][b] = max(DP[a][b-1], DP[a-1][b])
 
