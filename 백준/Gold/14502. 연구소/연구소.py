@@ -54,12 +54,9 @@ for x in range(len(coordinate)):
                         bfs()
 
             cnt = 0
-            for r in range(N):
-                for c in range(M):
-                    if tmp[r][c] == 0:
-                        cnt += 1
+            for lst in tmp:
+                cnt += lst.count(0)
 
-            if cnt > ans:
-                ans = cnt
+            ans = max(ans, cnt)
 
 print(ans)
