@@ -25,10 +25,8 @@ for _ in range(N):
         # 돌이 체스판 밖으로 나갈 때
         if 0 > nRr or nRr >= 8 or 0 > nRc or nRc >= 8:
             continue
-        King = (nKr, nKc)
         Rock = (nRr, nRc)
-    else:
-        King = (nKr, nKc)
+    King = (nKr, nKc)
 
 print(chr(ord('A')+King[1]) + str(8-int(King[0])))
 print(chr(ord('A')+Rock[1]) + str(8-int(Rock[0])))
