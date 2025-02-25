@@ -1,41 +1,49 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
-class Solution
-{
-    
-    static char[] tree;
-	static int N;
-    static StringBuilder sb = new StringBuilder();
+public class Solution {
 
-    
-	public static void main(String args[]) throws Exception
-	{
+  static int n;
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+  static String[] tree;
 
-		for (int t = 1; t <= 10; t++) {
-			N = Integer.parseInt(br.readLine());
+  static StringBuilder sb = new StringBuilder();
 
-			tree = new char[N + 1];
+  public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-			for (int i = 1; i <= N; i++) {
-				String[] v = br.readLine().split(" ");
-				tree[Integer.parseInt(v[0])] = v[1].charAt(0);
-			}
+    for (int t = 1; t <= 10; t++) {
 
-			sb.append("#" + t + " ");
-			middle(1);
-			sb.append("\n");
-		}
-		System.out.println(sb);
-	}
-    private static void middle(int i) {
+      sb.append("#").append(t).append(" ");
 
-		if (i > N) return;
-		
-		middle(2 * i);
-		sb.append(tree[i]);
-		middle(2 * i + 1);
-	}
+      n = Integer.parseInt(br.readLine());
+
+      tree = new String[n + 1];
+
+      for (int i = 1; i <= n; i++) {
+        String[] arr = br.readLine().split(" ");
+
+        tree[i] = arr[1];
+      }
+
+      inOrder(1);
+
+      sb.append("\n");
+
+    }
+    System.out.println(sb);
+  }
+
+  private static void inOrder(int i) {
+
+    if (i > n)
+      return;
+
+    inOrder(2 * i);
+
+    sb.append(tree[i]);
+
+    inOrder(2 * i + 1);
+
+  }
 }
