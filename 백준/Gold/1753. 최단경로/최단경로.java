@@ -8,24 +8,24 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-  static class Node implements Comparable<Node> {
-    int vertex, cost;
+  static class Pair implements Comparable<Pair> {
+    int p, weight;
 
-    public Node(int vertex, int cost) {
-      this.vertex = vertex;
-      this.cost = cost;
+    public Pair(int next, int w) {
+      p = next;
+      weight = w;
     }
 
     @Override
-    public int compareTo(Node other) {
-      return Integer.compare(this.cost, other.cost);
+    public int compareTo(Pair other) {
+      return this.weight - other.weight;
     }
   }
 
   static int V, E, K;
 
   static final int INF = Integer.MAX_VALUE;
-  static List<Node>[] graph;
+  static List<Pair>[] graph;
   static int[] distance;
 
   public static void main(String[] args) throws Exception {
@@ -51,41 +51,34 @@ public class Main {
       int v = Integer.parseInt(st.nextToken());
       int w = Integer.parseInt(st.nextToken());
 
-      graph[u].add(new Node(v, w));
+      graph[u].add(new Pair(v, w));
 
     }
 
     dijkstra();
 
-    for (int i = 1; i <= V; i++) {
-      if (distance[i] == INF) {
-        System.out.println("INF");
-      } else {
-        System.out.println(distance[i]);
-      }
-    }
+    StringBuilder sb = new StringBuilder();
+    for (int i = 1; i <= V; i++)
+      sb.append(distance[i] == Integer.MAX_VALUE ? "INF" : distance[i]).append("\n");
+    System.out.println(sb);
 
   }
 
   private static void dijkstra() {
-
-    PriorityQueue<Node> pq = new PriorityQueue<>();
-    pq.offer(new Node(K, 0));
+    PriorityQueue<Pair> pq = new PriorityQueue<>();
+    Arrays.fill(distance, Integer.MAX_VALUE);
     distance[K] = 0;
+    pq.add(new Pair(K, 0));
 
     while (!pq.isEmpty()) {
-      Node current = pq.poll();
-      int dist = current.cost;
-      int now = current.vertex;
-
-      if (distance[now] < dist)
+      Pair curr = pq.poll();
+      if (distance[curr.p] < curr.weight)
         continue;
-
-      for (Node neighbor : graph[now]) {
-        int cost = dist + neighbor.cost;
-        if (cost < distance[neighbor.vertex]) {
-          distance[neighbor.vertex] = cost;
-          pq.offer(new Node(neighbor.vertex, cost));
+      for (Pair next : graph[curr.p]) {
+        int nextWeight = curr.weight + next.weight;
+        if (distance[next.p] > nextWeight) {
+          distance[next.p] = nextWeight;
+          pq.add(new Pair(next.p, nextWeight));
         }
       }
     }
