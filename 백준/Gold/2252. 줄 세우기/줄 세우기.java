@@ -31,7 +31,6 @@ public class Main {
         List<Integer> result = new ArrayList<>();
         Queue<Integer> queue = new LinkedList<>();
 
-        // 진입 차수가 0인 노드들을 큐에 추가
         for (int i = 0; i < n; i++) {
             if (inDegree[i] == 0) {
                 queue.add(i);
