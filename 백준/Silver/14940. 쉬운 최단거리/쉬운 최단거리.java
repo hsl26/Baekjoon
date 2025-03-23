@@ -70,17 +70,13 @@ public class Main {
         nr = r + dr[d];
         nc = c + dc[d];
 
-        if (nr < 0 || nr >= N || nc < 0 || nc >= M || visited[nr][nc])
+        if (nr < 0 || nr >= N || nc < 0 || nc >= M || visited[nr][nc] || board[nr][nc] != 1)
           continue;
 
-        if (board[nr][nc] == 0) {
-          distance[nr][nc] = 0;
-          continue;
-        } else {
-          distance[nr][nc] = distance[r][c] + 1;
-          q.add(new int[] {nr, nc});
-          visited[nr][nc] = true;
-        }
+        distance[nr][nc] = distance[r][c] + 1;
+        q.add(new int[] {nr, nc});
+        visited[nr][nc] = true;
+
 
       }
 
