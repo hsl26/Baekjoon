@@ -35,21 +35,19 @@ public class Main {
 
     int n = S.length();
     int m = P.length();
-    int i = 0, j = 0;
+    int j = 0;
 
-    while (i < n) {
-      if (S.charAt(i) == P.charAt(j)) {
-        i += 1;
-        j += 1;
-        if (j == m) {
+    for (int i = 0; i < n; i++) {
+      while (j > 0 && s.charAt(i) != p.charAt(j)) {
+        j = pi[j - 1];
+      }
+      if (s.charAt(i) == p.charAt(j)) {
+        if (j == m - 1) {
           answer++;
-          i = i - j + 1;
-          j = 0;
+          j = pi[j];
+        } else {
+          j++;
         }
-      } else if (j == 0)
-        i += 1;
-      else {
-        j = pi[j];
       }
     }
 
@@ -59,18 +57,14 @@ public class Main {
 
     int m = p.length();
     pi = new int[m];
-    int i = 1, j = 0;
+    int j = 0;
 
-    while (i < m - 1) {
+    for (int i = 1; i < m; i++) {
+      while (j > 0 && p.charAt(i) != p.charAt(j)) {
+        j = pi[j - 1];
+      }
       if (p.charAt(i) == p.charAt(j)) {
-        i++;
-        j++;
-        pi[i] = j;
-      } else if (j == 0) {
-        i += 1;
-        pi[i] = j;
-      } else {
-        j = pi[j];
+        pi[i] = ++j;
       }
     }
 
