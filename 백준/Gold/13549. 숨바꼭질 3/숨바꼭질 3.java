@@ -1,71 +1,65 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
 
-  static Queue<Integer> q;
-
-  static int[] visit;
-  static int[] cost;
-
   static int N, K;
+  static int[] board;
+  static boolean[] visited;
+
 
   public static void main(String[] args) throws IOException {
-    // BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st = new StringTokenizer(br.readLine());
 
-    Scanner sc = new Scanner(System.in);
+    N = Integer.parseInt(st.nextToken());
+    K = Integer.parseInt(st.nextToken());
 
-    N = sc.nextInt();
-    K = sc.nextInt();
+    visited = new boolean[200000 + 1];
+    board = new int[200000 + 1];
 
-    visit = new int[200000 + 1];
-    cost = new int[200000 + 1];
-
-    q = new LinkedList<>();
-
-    q.add(N);
-    visit[N] = 1; // 방문한게 1
     bfs();
 
-    System.out.println(cost[K]);
+    System.out.println(board[K]);
   }
 
   private static void bfs() {
+    int cur;
+    Queue<Integer> q = new LinkedList<>();
+    q.add(N);
+    visited[N] = true;
 
     while (!q.isEmpty()) {
-      int a = q.remove();
-      int n = a;
 
-      for (int i = 0; i < 3; i++) {
-        if (i == 0)
-          n = a * 2;
-        else if (i == 1)
-          n = a - 1;
-        else
-          n = a + 1;
+      cur = q.remove();
 
-        if (can_go(n)) {
-          q.add(n);
-          visit[n] = 1;
-          cost[n] = i != 0 ? cost[a] + 1 : cost[a];
-
-          if (n == K)
-            return;
-        }
+      if (2 * cur < board.length && !visited[2 * cur]) {
+        board[2 * cur] = board[cur];
+        q.add(2 * cur);
+        visited[2 * cur] = true;
       }
+
+      if (cur - 1 >= 0 && !visited[cur - 1]) {
+        board[cur - 1] = board[cur] + 1;
+        q.add(cur - 1);
+        visited[cur - 1] = true;
+      }
+
+      if (cur + 1 < board.length && !visited[cur + 1]) {
+        board[cur + 1] = board[cur] + 1;
+        q.add(cur + 1);
+        visited[cur + 1] = true;
+      }
+
+
+
     }
 
   }
 
-  private static boolean can_go(int n) {
 
-    if (n < 0 || n > 200000)
-      return false;
-    if (visit[n] == 1)
-      return false;
-
-    return true;
-  }
 }
