@@ -1,30 +1,40 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class Main {
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
 
-		int N = Integer.parseInt(br.readLine());
+  static int N;
 
-		int[] arr = new int[Math.max(6, N + 1)];
+  static int[] dp;
 
-		arr[N] = -1;
-		arr[3] = 1;
-		arr[5] = 1;
 
-		for (int i = 6; i <= N; i++) {
-			if (arr[i - 5] == 0 && arr[i - 3] == 0)
-				continue;
-			else if (arr[i - 5] == 0)
-				arr[i] = arr[i - 3] + 1;
-			else if (arr[i - 3] == 0)
-				arr[i] = arr[i - 5] + 1;
-			else
-				arr[i] = Math.min(arr[i - 5] + 1, arr[i - 3] + 1);
-		}
+  public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		System.out.println(arr[N]);
-	}
+    N = Integer.parseInt(br.readLine());
+
+    dp = new int[N + 1];
+
+    Arrays.fill(dp, N);
+
+    dp[0] = 0;
+
+    for (int i = 1; i <= N; i++) {
+
+      if (i - 5 >= 0) {
+        dp[i] = Math.min(dp[i - 3] + 1, Math.min(dp[i - 5] + 1, dp[i]));
+      } else if (i - 3 >= 0) {
+        dp[i] = Math.min(dp[i - 3] + 1, dp[i]);
+      }
+    }
+
+    if (dp[N] == N) {
+      dp[N] = -1;
+    }
+
+    System.out.println(dp[N]);
+
+  }
+
 }
