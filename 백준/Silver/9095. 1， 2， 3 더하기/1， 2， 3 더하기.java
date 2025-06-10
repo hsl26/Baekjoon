@@ -1,30 +1,38 @@
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class Main {
 
-  public static void main(String[] args) throws IOException {
+  static int T, N;
+
+  static int[] dp;
+
+  public static void main(String[] args) throws Exception {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    int T = Integer.parseInt(br.readLine());
+    T = Integer.parseInt(br.readLine());
 
     for (int t = 0; t < T; t++) {
-      int n = Integer.parseInt(br.readLine());
+      N = Integer.parseInt(br.readLine());
 
-      int[] dp = new int[n + 1];
+      dp = new int[N + 1];
+
+      Arrays.fill(dp, N);
 
       dp[0] = 1;
-      dp[1] = 1;
-      if (n >= 2)
+      if (N >= 1)
+        dp[1] = 1;
+      if (N >= 2)
         dp[2] = 2;
 
-      for (int i = 3; i <= n; i++) {
+      for (int i = 3; i <= N; i++) {
         dp[i] = dp[i - 1] + dp[i - 2] + dp[i - 3];
       }
 
-      System.out.println(dp[n]);
+      System.out.println(dp[N]);
     }
+
   }
+
 }
