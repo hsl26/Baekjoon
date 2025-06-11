@@ -1,26 +1,51 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+  static int N;
 
-		int N = sc.nextInt();
-		int[][] house = new int[N + 1][3];
-		for (int i = 1; i <= N; i++) {
-			house[i][0] = sc.nextInt();
-			house[i][1] = sc.nextInt();
-			house[i][2] = sc.nextInt();
-		}
+  static int[][] dp, cost;
 
-		long[][] dp = new long[N + 1][3];
-		for (int i = 1; i <= N; i++) {
-			dp[i][0] = house[i][0] + Math.min(dp[i - 1][1], dp[i - 1][2]);
-			dp[i][1] = house[i][1] + Math.min(dp[i - 1][0], dp[i - 1][2]);
-			dp[i][2] = house[i][2] + Math.min(dp[i - 1][0], dp[i - 1][1]);
-		}
-		
-		
-		System.out.println(Math.min(dp[N][0], Math.min(dp[N][1],dp[N][2])));
-	}
+  public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    N = Integer.parseInt(br.readLine());
+
+    cost = new int[N + 1][4];
+    dp = new int[N + 1][4];
+
+    for (int r = 1; r <= N; r++) {
+      StringTokenizer st = new StringTokenizer(br.readLine());
+      for (int c = 1; c <= 3; c++) {
+        cost[r][c] = Integer.parseInt(st.nextToken());
+        dp[r][c] = 1000 * 3 * N;
+      }
+    }
+
+    for (int i = 1; i <= 3; i++) {
+      dp[1][i] = cost[1][i];
+    }
+
+    for (int r = 2; r <= N; r++) {
+      for (int c = 1; c <= 3; c++) {
+        for (int i = 1; i <= 3; i++) {
+
+          if (c == i)
+            continue;
+
+          dp[r][c] = Math.min(dp[r - 1][i] + cost[r][c], dp[r][c]);
+        }
+      }
+    }
+
+    int ans = 1000 * 3 * N;
+    for (int i = 1; i <= 3; i++) {
+      ans = Math.min(dp[N][i], ans);
+    }
+
+    System.out.println(ans);
+  }
+
 }
