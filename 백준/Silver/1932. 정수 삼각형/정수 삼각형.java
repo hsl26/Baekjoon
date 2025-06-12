@@ -1,45 +1,51 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
 
-		int N = Integer.parseInt(br.readLine());
-        List<List<Integer>> triangle = new ArrayList<>();
+  static int N;
 
-		for (int i = 0; i < N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            List<Integer> row = new ArrayList<>();
-            while (st.hasMoreTokens()) {
-                row.add(Integer.parseInt(st.nextToken()));
-            }
-            triangle.add(row);
+  static int[][] dp, tree;
+
+  public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st;
+
+    N = Integer.parseInt(br.readLine());
+
+    dp = new int[N][N];
+    tree = new int[N][N];
+
+    for (int r = 0; r < N; r++) {
+      st = new StringTokenizer(br.readLine());
+      for (int c = 0; c < r + 1; c++) {
+        tree[r][c] = Integer.parseInt(st.nextToken());
+      }
+    }
+
+    dp[0][0] = tree[0][0];
+
+    for (int r = 1; r < N; r++) {
+      for (int c = 0; c < r + 1 && c < N; c++) {
+        if (c == 0) {
+          dp[r][c] = dp[r - 1][0] + tree[r][c];
+        } else if (c == r) {
+          dp[r][c] = dp[r - 1][r - 1] + tree[r][c];
+        } else {
+          dp[r][c] = Math.max(dp[r - 1][c - 1] + tree[r][c], dp[r - 1][c] + tree[r][c]);
         }
+      }
+    }
 
-		long[][] dp = new long[N][N];
-        dp[0][0] = triangle.get(0).get(0);
+    int ans = 0;
 
-		for (int i = 1; i < N; i++) {
-            for (int j = 0; j <= i; j++) {
-                long curValue = triangle.get(i).get(j);
-                if (j > 0) {
-                    dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - 1] + curValue);
-                }
-                if (j < i) {
-                    dp[i][j] = Math.max(dp[i][j], dp[i - 1][j] + curValue);
-                }
-            }
-        }
+    for (int i = 0; i < N; i++) {
+      ans = Math.max(ans, dp[N - 1][i]);
+    }
 
-		long maxValue = 0;
-        for (int j = 0; j < N; j++) {
-            maxValue = Math.max(maxValue, dp[N - 1][j]);
-        }
+    System.out.println(ans);
 
-		sb.append(maxValue);
-		System.out.println(sb);
-	}
+  }
 
 }
