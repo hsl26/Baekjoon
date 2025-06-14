@@ -1,32 +1,42 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
+
+  static int N;
+
+  static long[][] dp;
+
   public static void main(String[] args) throws Exception {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st;
 
-    int n = Integer.parseInt(br.readLine());
+    N = Integer.parseInt(br.readLine());
 
-    long[][] dp = new long[n + 1][10];
+    dp = new long[N + 1][10];
 
-    Arrays.fill(dp[1], 1);
-    dp[1][0] = 0;
+    for (int i = 1; i <= 9; i++) {
+      dp[1][i] = 1;
+    }
 
-    for (int i = 2; i <= n; i++) {
-      dp[i][0] = dp[i - 1][1];
-      for (int j = 1; j < 9; j++) {
-        dp[i][j] = (dp[i - 1][(j + 9) % 10] + dp[i - 1][(j + 1) % 10]) % 1000000000;
+    for (int r = 2; r <= N; r++) {
+      for (int i = 0; i <= 9; i++) {
+        if (i != 9 && i != 0)
+          dp[r][i] = (dp[r - 1][i - 1] + dp[r - 1][i + 1]) % 1000000000;
+        else if (i == 9)
+          dp[r][i] = dp[r - 1][i - 1];
+        else
+          dp[r][i] = dp[r - 1][i + 1];
       }
-      dp[i][9] = dp[i - 1][8];
     }
 
-    long answer = 0;
-    for (int i = 0; i < 10; i++) {
-      answer += dp[n][i];
-      answer %= 1000000000;
+    long ans = 0;
+    for (int i = 0; i <= 9; i++) {
+      ans += dp[N][i];
     }
 
-    System.out.println(answer);
+    System.out.println(ans %= 1000000000);
+
   }
 }
