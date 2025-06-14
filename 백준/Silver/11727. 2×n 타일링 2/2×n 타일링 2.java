@@ -1,23 +1,32 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
 
-  public static void main(String[] args) throws IOException {
+  static int N;
+
+  static int[] dp;
+
+  public static void main(String[] args) throws Exception {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st;
 
-    int n = Integer.parseInt(br.readLine());
 
-    int[] dp = new int[n + 1];
 
-    dp[0] = 1;
+    N = Integer.parseInt(br.readLine());
+
+    dp = new int[N + 1];
+
     dp[1] = 1;
+    if (N >= 2)
+      dp[2] = dp[1] + 2;
 
-    for (int i = 2; i <= n; i++) {
-      dp[i] = (dp[i - 1] + 2 * dp[i - 2]) % 10007;
+    for (int i = 3; i <= N; i++) {
+      dp[i] = (dp[i - 1] + dp[i - 2] * 2) % 10007;
     }
 
-    System.out.println(dp[n]);
+    System.out.println(dp[N]);
+
   }
 }
