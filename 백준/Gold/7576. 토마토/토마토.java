@@ -6,68 +6,15 @@ import java.util.StringTokenizer;
 
 public class Main {
 
-  static int M, N;
+  static int M, N, tobe;
 
-  static int[] dr = {0, 0, 1, -1};
-  static int[] dc = {1, -1, 0, 0};
+  static int[][] board;
 
-  static int[][] board, score, visited;
+  static int[] drs = {0, 0, 1, -1}, dcs = {1, -1, 0, 0};
 
   static Queue<int[]> tomato = new LinkedList<>();
 
   public static void main(String[] args) throws Exception {
-
-    init();
-
-
-    bfs();
-
-    int answer = score[0][0];
-
-    for (int r = 0; r < N; r++) {
-      for (int c = 0; c < M; c++) {
-        if (board[r][c] == 0)
-          answer = Math.max(answer, score[r][c]);
-      }
-    }
-
-    if (answer == 1000 * 1000)
-      answer = -1;
-
-    System.out.println(answer);
-
-  }
-
-  private static void bfs() {
-    while (!tomato.isEmpty()) {
-      int[] coor = tomato.remove();
-
-      for (int d = 0; d < 4; d++) {
-        int nr = coor[0] + dr[d];
-        int nc = coor[1] + dc[d];
-
-        if (canGo(nr, nc)) {
-          tomato.add(new int[] {nr, nc});
-          visited[nr][nc] = 1;
-          score[nr][nc] = Math.min(score[nr][nc], score[coor[0]][coor[1]] + 1);
-        }
-      }
-    }
-  }
-
-
-  private static boolean canGo(int r, int c) {
-    if (r < 0 || r >= N || c < 0 || c >= M)
-      return false;
-
-    if (visited[r][c] == 1 || board[r][c] != 0)
-      return false;
-
-    return true;
-  }
-
-
-  private static void init() throws Exception {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     StringTokenizer st = new StringTokenizer(br.readLine());
 
@@ -75,23 +22,74 @@ public class Main {
     N = Integer.parseInt(st.nextToken());
 
     board = new int[N][M];
-    score = new int[N][M];
-    visited = new int[N][M];
+    tobe = 0;
 
     for (int r = 0; r < N; r++) {
       st = new StringTokenizer(br.readLine());
-
       for (int c = 0; c < M; c++) {
         board[r][c] = Integer.parseInt(st.nextToken());
-        if (board[r][c] == 0)
-          score[r][c] = 1000 * 1000;
-        else if (board[r][c] == 1) {
+
+        if (board[r][c] == 1) {
           tomato.add(new int[] {r, c});
-          visited[r][c] = 1;
-          score[r][c] = 0;
-        } else
-          score[r][c] = -1;
+        } else if (board[r][c] == 0) {
+          tobe++;
+        }
       }
     }
+
+    if (tobe == 0) {
+      System.out.println(0);
+      return;
+    }
+
+    int cnt = 0;
+    while (tobe > 0 && !tomato.isEmpty()) {
+
+      bfs();
+      cnt++;
+    }
+
+    if (tobe > 0) {
+      System.out.println(-1);
+    } else {
+      System.out.println(cnt);
+    }
+  }
+
+  private static void bfs() {
+
+    Queue<int[]> newTomato = new LinkedList<>();
+
+    while (!tomato.isEmpty()) {
+      int[] arr = tomato.poll();
+
+      for (int d = 0; d < 4; d++) {
+        int nr = arr[0] + drs[d];
+        int nc = arr[1] + dcs[d];
+
+        if (canGo(nr, nc)) {
+          newTomato.add(new int[] {nr, nc});
+          board[nr][nc] = 1;
+          tobe--;
+        }
+      }
+    }
+
+    while (!newTomato.isEmpty()) {
+      int[] arr = newTomato.poll();
+      tomato.add(arr);
+    }
+
+  }
+
+  private static boolean canGo(int r, int c) {
+
+    if (r < 0 || r >= N || c < 0 || c >= M)
+      return false;
+
+    if (board[r][c] != 0)
+      return false;
+
+    return true;
   }
 }
