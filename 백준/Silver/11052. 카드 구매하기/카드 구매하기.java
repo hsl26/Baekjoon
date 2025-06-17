@@ -1,24 +1,45 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
 
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
+  static int N;
 
-		int[] arr = new int[n + 1];
-		int[] dp = new int[n + 1];
+  static int[] board, dp;
 
-		for (int i = 1; i <= n; i++)
-			arr[i] = sc.nextInt();
+  public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st;
 
-		for (int i = 1; i <= n; i++) {
-			for (int j = 1; j <= i; j++) {
-				dp[i] = Math.max(dp[i], dp[i - j] + arr[j]);
-			}
-		}
-		
-		System.out.println(dp[n]);
+    N = Integer.parseInt(br.readLine());
 
-	}
+    board = new int[N + 1];
+
+    st = new StringTokenizer(br.readLine());
+    for (int i = 1; i <= N; i++) {
+      board[i] = Integer.parseInt(st.nextToken());
+    }
+
+    dp = new int[N + 1];
+
+    dp[1] = board[1];
+    if (N >= 2)
+      dp[2] = Math.max(dp[1] * 2, board[2]);
+    if (N >= 3)
+      dp[3] = Math.max(dp[1] + dp[2], board[3]);
+
+    for (int i = 4; i <= N; i++) {
+      int res = 0;
+      for (int j = 1; j <= i / 2; j++) {
+        res = Math.max(res, dp[j] + dp[i - j]);
+      }
+
+      dp[i] = Math.max(board[i], res);
+    }
+
+    System.out.println(dp[N]);
+
+  }
+
 }
