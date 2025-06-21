@@ -35,12 +35,7 @@ public class Main {
 
     }
 
-    int ans = 0;
-    for (int i = 1; i <= N; i++) {
-      ans = Math.max(ans, dp[i]);
-    }
-
-    System.out.println(ans);
+    System.out.println(Math.max(max, dp[N]));
 
   }
 
